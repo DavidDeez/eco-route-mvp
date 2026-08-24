@@ -7,17 +7,17 @@ const MapWithNoSSR = dynamic(() => import('@/components/MapComponent'), {
 
 export default function MapPage() {
   return (
-    <div className="p-8 h-full flex flex-col">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Live Infrastructure Map</h1>
-        <p className="text-gray-500 mt-2">Geospatial view of bins, trucks, and processing plants.</p>
+    <div className="p-4 md:p-8 h-[calc(100vh-4rem)] md:h-screen flex flex-col">
+      <div className="mb-4 md:mb-6 shrink-0">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Live Infrastructure Map</h1>
+        <p className="text-sm md:text-base text-gray-500 mt-1 md:mt-2">Geospatial view of bins, trucks, and processing plants.</p>
       </div>
 
-      <div className="flex-1 min-h-0">
+      <div className="flex-1 min-h-[300px] mb-4">
         <MapWithNoSSR />
       </div>
 
-      <div className="mt-6 flex gap-6 text-sm">
+      <div className="mt-2 flex flex-wrap gap-3 md:gap-6 text-xs md:text-sm pb-4 md:pb-0 shrink-0">
         <div className="flex items-center gap-2">
           <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" className="h-6" alt="green marker"/>
           <span>Organic Bins</span>

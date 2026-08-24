@@ -21,16 +21,16 @@ export default function DispatchPage() {
   };
 
   return (
-    <div className="p-8">
-      <div className="mb-8 flex justify-between items-end">
+    <div className="p-4 md:p-8">
+      <div className="mb-6 md:mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dispatch Engine</h1>
-          <p className="text-gray-500 mt-2">Generate optimized collection routes for active trucks.</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dispatch Engine</h1>
+          <p className="text-sm md:text-base text-gray-500 mt-1 md:mt-2">Generate optimized collection routes for active trucks.</p>
         </div>
         <button 
           onClick={handleOptimize}
           disabled={isOptimizing || routeGenerated}
-          className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
+          className="w-full md:w-auto flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
         >
           {isOptimizing ? 'Calculating Routes...' : (
             <>

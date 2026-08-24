@@ -10,18 +10,18 @@ export default function Dashboard() {
   const activeTrucks = initialTrucks.filter(t => t.status !== 'idle').length;
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-8">
+    <div className="p-4 md:p-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
-          <p className="text-gray-500 mt-2">Real-time waste aggregation and logistics</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard Overview</h1>
+          <p className="text-sm md:text-base text-gray-500 mt-1 md:mt-2">Real-time waste aggregation and logistics</p>
         </div>
-        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+        <button className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
           Simulate Trigger (IoT/USSD)
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
         <MetricsCard 
           title="Total Bins Monitored" 
           value={totalBins} 
