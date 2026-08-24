@@ -10,13 +10,13 @@ export default function Dashboard() {
   const activeTrucks = initialTrucks.filter(t => t.status !== 'idle').length;
 
   return (
-    <div className="p-4 md:p-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard Overview</h1>
-          <p className="text-sm md:text-base text-gray-500 mt-1 md:mt-2">Real-time waste aggregation and logistics</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Dashboard Overview</h1>
+          <p className="text-sm md:text-base text-slate-500 mt-2 font-medium">Real-time waste aggregation and logistics</p>
         </div>
-        <button className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+        <button className="w-full md:w-auto bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md shadow-slate-900/10 active:scale-95">
           Simulate Trigger (IoT/USSD)
         </button>
       </div>
@@ -32,33 +32,42 @@ export default function Dashboard() {
         <MetricsCard 
           title="Full Bins (Urgent)" 
           value={fullBins} 
-          icon={<AlertTriangle className="w-6 h-6 text-red-500" />}
+          icon={<AlertTriangle className="w-6 h-6 text-rose-500" />}
           trend="3"
           trendUp={false}
         />
         <MetricsCard 
-          title="Organic vs Inorganic (Full)" 
+          title="Organic / Inorganic" 
           value={`${organicFull} / ${inorganicFull}`} 
           icon={<Recycle className="w-6 h-6 text-blue-500" />}
         />
         <MetricsCard 
           title="Active Trucks" 
           value={activeTrucks} 
-          icon={<TruckIcon className="w-6 h-6 text-yellow-500" />}
+          icon={<TruckIcon className="w-6 h-6 text-amber-500" />}
         />
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Triggers</h2>
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-200/60 p-6 md:p-8">
+        <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center">
+          <div className="w-2 h-6 bg-emerald-500 rounded-full mr-3"></div>
+          Recent Triggers
+        </h2>
         <div className="space-y-4">
           {initialBins.filter(b => b.status === 'full').map(bin => (
-            <div key={bin.id} className="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <div className={`w-3 h-3 rounded-full mr-4 ${bin.type === 'organic' ? 'bg-green-500' : 'bg-blue-500'}`}></div>
-              <div className="flex-1">
-                <p className="font-semibold text-gray-900">{bin.id} reached 100% capacity</p>
-                <p className="text-sm text-gray-500 capitalize">{bin.type} stream • {new Date(bin.lastUpdated).toLocaleTimeString()}</p>
+            <div key={bin.id} className="flex flex-col sm:flex-row sm:items-center p-5 bg-slate-50 hover:bg-slate-100 transition-colors rounded-2xl border border-slate-200/60 gap-4">
+              <div className={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center shadow-sm ${bin.type === 'organic' ? 'bg-emerald-100 text-emerald-600' : 'bg-blue-100 text-blue-600'}`}>
+                <Trash2 className="w-6 h-6" />
               </div>
-              <span className="px-3 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">Requires Pickup</span>
+              <div className="flex-1">
+                <p className="font-bold text-slate-900 text-lg">{bin.id} reached 100% capacity</p>
+                <p className="text-sm text-slate-500 font-medium capitalize mt-1">
+                  <span className={bin.type === 'organic' ? 'text-emerald-600' : 'text-blue-600'}>{bin.type} stream</span> • {new Date(bin.lastUpdated).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                </p>
+              </div>
+              <span className="inline-flex items-center justify-center px-4 py-1.5 bg-rose-50 border border-rose-200 text-rose-700 text-sm font-bold rounded-full">
+                Requires Pickup
+              </span>
             </div>
           ))}
         </div>
