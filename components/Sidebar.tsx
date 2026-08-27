@@ -86,27 +86,31 @@ export default function Sidebar() {
                 </li>
               );
             })}
+            
+            {/* Added directly under Profile tab */}
+            <li className="pt-2 mt-2 border-t border-gray-100"></li>
+            <li>
+              <Link href="/dashboard/profile" onClick={closeSidebar} className="flex items-center px-3 py-2 rounded-md text-sm transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                <Settings className="w-4 h-4 mr-3 text-gray-400" />
+                Settings
+              </Link>
+            </li>
+            <li>
+              <button 
+                onClick={() => {
+                  closeSidebar();
+                  window.location.href = '/'; // Full reload to clear state and go to login
+                }}
+                className="flex items-center px-3 py-2 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors w-full rounded-md text-left"
+              >
+                <svg className="w-4 h-4 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Sign Out
+              </button>
+            </li>
           </ul>
         </nav>
-
-        <div className="p-3 border-t border-gray-100 space-y-1">
-          <Link href="/dashboard/profile" onClick={closeSidebar} className="flex items-center px-3 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors w-full rounded-md hover:bg-gray-50">
-            <Settings className="w-4 h-4 mr-3 text-gray-400" />
-            Settings
-          </Link>
-          <button 
-            onClick={() => {
-              closeSidebar();
-              window.location.href = '/'; // Full reload to clear state and go to login
-            }}
-            className="flex items-center px-3 py-2 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors w-full rounded-md"
-          >
-            <svg className="w-4 h-4 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            Sign Out
-          </button>
-        </div>
       </div>
     </>
   );
