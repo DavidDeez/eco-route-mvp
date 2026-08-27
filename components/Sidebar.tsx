@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Home, Map as MapIcon, Truck, Settings, Menu, X } from 'lucide-react';
+import { Home, Map as MapIcon, Truck, Settings, Menu, X, Archive } from 'lucide-react';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +14,7 @@ export default function Sidebar() {
 
   const navItems = [
     { href: '/', icon: Home, label: 'Overview' },
+    { href: '/bins', icon: Archive, label: 'Bin Directory' },
     { href: '/map', icon: MapIcon, label: 'Live Map' },
     { href: '/dispatch', icon: Truck, label: 'Dispatch' },
   ];
