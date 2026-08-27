@@ -13,10 +13,10 @@ export default function Sidebar() {
   const closeSidebar = () => setIsOpen(false);
 
   const navItems = [
-    { href: '/', icon: Home, label: 'Overview' },
-    { href: '/bins', icon: Archive, label: 'Bin Directory' },
-    { href: '/map', icon: MapIcon, label: 'Live Map' },
-    { href: '/dispatch', icon: Truck, label: 'Dispatch' },
+    { href: '/dashboard', icon: Home, label: 'Overview' },
+    { href: '/dashboard/bins', icon: Archive, label: 'Bin Directory' },
+    { href: '/dashboard/map', icon: MapIcon, label: 'Live Map' },
+    { href: '/dashboard/dispatch', icon: Truck, label: 'Dispatch' },
   ];
 
   return (

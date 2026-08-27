@@ -1,96 +1,130 @@
 'use client';
 
 import { useState } from 'react';
-import MetricsCard from '@/components/MetricsCard';
-import { initialBins, initialTrucks } from '@/lib/mockData';
-import { Trash2, Recycle, Truck as TruckIcon, AlertTriangle, Activity } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Leaf, ArrowRight, Lock, Mail } from 'lucide-react';
 
-export default function Dashboard() {
-  const [bins, setBins] = useState(initialBins);
+export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const totalBins = bins.length;
-  const fullBins = bins.filter(b => b.status === 'full').length;
-  const organicFull = bins.filter(b => b.status === 'full' && b.type === 'organic').length;
-  const inorganicFull = bins.filter(b => b.status === 'full' && b.type === 'inorganic').length;
-  const activeTrucks = initialTrucks.filter(t => t.status !== 'idle').length;
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    // Simulate auth delay
+    setTimeout(() => {
+      router.push('/dashboard');
+    }, 800);
+  };
 
-  const handleSimulateTrigger = () => {
-    // Find a bin that isn't full and make it full
-    const nonFullBins = bins.filter(b => b.status !== 'full');
-    if (nonFullBins.length === 0) return;
-    
-    const randomBin = nonFullBins[Math.floor(Math.random() * nonFullBins.length)];
-    const updatedBins = bins.map(b => 
-      b.id === randomBin.id ? { ...b, status: 'full' as const, lastUpdated: new Date().toISOString() } : b
-    );
-    setBins(updatedBins);
+  const handleGuestLogin = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      router.push('/dashboard');
+    }, 500);
   };
 
   return (
-    <div className="p-4 md:p-8 max-w-6xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">Overview</h1>
-          <p className="text-sm text-gray-500 mt-1">Real-time waste aggregation and logistics</p>
+    <div className="min-h-screen bg-white flex flex-col justify-center items-center p-4 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-green-50 to-white -z-10"></div>
+      
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="mx-auto w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white mb-4 shadow-sm">
+            <Leaf className="w-6 h-6" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Welcome to EcoRoute</h1>
+          <p className="text-gray-500 font-medium">Smart Waste Management Platform</p>
         </div>
-        <button 
-          onClick={handleSimulateTrigger}
-          className="w-full md:w-auto flex items-center justify-center bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm shadow-sm"
-        >
-          <Activity className="w-4 h-4 mr-2" />
-          Simulate Trigger (IoT)
-        </button>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <MetricsCard 
-          title="Total Bins Monitored" 
-          value={totalBins} 
-          icon={<Trash2 className="w-5 h-5" />}
-          trend="12%"
-          trendUp={true}
-        />
-        <MetricsCard 
-          title="Full Bins (Urgent)" 
-          value={fullBins} 
-          icon={<AlertTriangle className="w-5 h-5 text-red-500" />}
-          trend="3"
-          trendUp={false}
-        />
-        <MetricsCard 
-          title="Organic / Inorganic" 
-          value={`${organicFull} / ${inorganicFull}`} 
-          icon={<Recycle className="w-5 h-5 text-blue-500" />}
-        />
-        <MetricsCard 
-          title="Active Trucks" 
-          value={activeTrucks} 
-          icon={<TruckIcon className="w-5 h-5 text-yellow-500" />}
-        />
-      </div>
-
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Recent Triggers</h2>
-        </div>
-        <div className="divide-y divide-gray-100">
-          {bins.filter(b => b.status === 'full').sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime()).map(bin => (
-            <div key={bin.id} className="flex flex-col sm:flex-row sm:items-center p-4 hover:bg-gray-50 transition-colors gap-4">
-              <div className="flex-1 flex items-start gap-3">
-                <div className={`mt-0.5 w-2 h-2 rounded-full ${bin.type === 'organic' ? 'bg-green-500' : 'bg-blue-500'}`}></div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">{bin.id} reached 100% capacity</p>
-                  <p className="text-xs text-gray-500 capitalize mt-0.5">
-                    {bin.type} stream • {new Date(bin.lastUpdated).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                  </p>
+        <div className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-8">
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email address</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-gray-400" />
                 </div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors"
+                  placeholder="admin@ecoroute.io"
+                  required
+                />
               </div>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100">
-                Requires Pickup
-              </span>
             </div>
-          ))}
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors"
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded" />
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-600">
+                  Remember me
+                </label>
+              </div>
+              <div className="text-sm">
+                <a href="#" className="font-semibold text-green-600 hover:text-green-500">
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors disabled:opacity-50"
+            >
+              {isLoading ? 'Authenticating...' : 'Sign In'}
+            </button>
+          </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-3 bg-white text-gray-500 font-medium">Or continue for demo</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                onClick={handleGuestLogin}
+                disabled={isLoading}
+                className="w-full flex justify-center items-center py-2.5 px-4 border border-gray-200 rounded-lg shadow-sm bg-white text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 disabled:opacity-50"
+              >
+                Login as Guest
+                <ArrowRight className="ml-2 w-4 h-4 text-gray-400" />
+              </button>
+            </div>
+          </div>
         </div>
+
+        <p className="text-center text-sm text-gray-500 mt-8">
+          EcoRoute MVP © {new Date().getFullYear()}. All rights reserved.
+        </p>
       </div>
     </div>
   );
