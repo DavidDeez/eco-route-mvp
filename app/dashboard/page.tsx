@@ -75,30 +75,75 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Analytics Chart */}
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex justify-between items-center mb-6">
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col">
+          <div className="flex justify-between items-center mb-2">
             <h2 className="text-lg font-semibold text-gray-900">Collection Volume (Last 7 Days)</h2>
-            <select className="text-sm border-none bg-gray-50 rounded-md px-2 py-1 text-gray-600 outline-none">
+            <select className="text-sm border border-gray-200 bg-white shadow-sm rounded-md px-3 py-1.5 text-gray-700 outline-none hover:bg-gray-50 cursor-pointer">
               <option>This Week</option>
               <option>Last Week</option>
             </select>
           </div>
-          <div className="h-64 flex items-end justify-between gap-2 sm:gap-4 px-1 sm:px-4 pb-6 mt-4">
-            {[45, 60, 35, 75, 55, 90, 85].map((height, i) => (
-              <div key={i} className="w-full h-full flex flex-col justify-end items-center group relative">
-                {/* Tooltip */}
-                <div className="opacity-0 group-hover:opacity-100 absolute -top-8 bg-gray-900 text-white text-xs px-2 py-1 rounded transition-opacity whitespace-nowrap z-10 pointer-events-none">
-                  {height * 12} kg
+          
+          {/* Legend */}
+          <div className="flex gap-4 mb-8 text-sm">
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded-sm bg-gradient-to-t from-green-600 to-green-400"></div>
+              <span className="text-gray-500 font-medium">Organic</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded-sm bg-gradient-to-t from-blue-600 to-blue-400"></div>
+              <span className="text-gray-500 font-medium">Inorganic</span>
+            </div>
+          </div>
+
+          {/* Chart Area */}
+          <div className="relative h-56 w-full mt-auto">
+            {/* Background Grid Lines */}
+            <div className="absolute inset-0 flex flex-col justify-between border-b border-gray-200 pb-6 pointer-events-none">
+              <div className="w-full border-t border-gray-100 border-dashed"></div>
+              <div className="w-full border-t border-gray-100 border-dashed"></div>
+              <div className="w-full border-t border-gray-100 border-dashed"></div>
+              <div className="w-full border-t border-gray-100 border-dashed"></div>
+            </div>
+
+            {/* Bars */}
+            <div className="absolute inset-0 flex items-end justify-between gap-3 sm:gap-6 px-2 sm:px-6 pb-6">
+              {[
+                { day: 'Mon', organic: 45, inorganic: 20 },
+                { day: 'Tue', organic: 35, inorganic: 30 },
+                { day: 'Wed', organic: 50, inorganic: 15 },
+                { day: 'Thu', organic: 45, inorganic: 25 },
+                { day: 'Fri', organic: 60, inorganic: 35 },
+                { day: 'Sat', organic: 30, inorganic: 15 },
+                { day: 'Sun', organic: 20, inorganic: 10 }
+              ].map((data, i) => (
+                <div key={i} className="w-full h-full flex flex-col justify-end items-center group relative z-10 cursor-pointer">
+                  {/* Tooltip */}
+                  <div className="opacity-0 group-hover:opacity-100 absolute -top-14 bg-gray-900 text-white text-xs p-2.5 rounded-lg shadow-xl transition-all duration-200 whitespace-nowrap z-20 pointer-events-none transform translate-y-2 group-hover:translate-y-0">
+                    <p className="font-semibold mb-1 pb-1 border-b border-gray-700">{data.day} Total: {(data.organic + data.inorganic) * 12} kg</p>
+                    <p className="text-green-400">Organic: {data.organic * 12} kg</p>
+                    <p className="text-blue-400">Inorganic: {data.inorganic * 12} kg</p>
+                  </div>
+                  
+                  {/* Bar Container */}
+                  <div className="w-full max-w-[40px] flex flex-col justify-end h-full group-hover:opacity-80 transition-opacity">
+                    {/* Inorganic Bar (Top) */}
+                    <div 
+                      className="w-full bg-gradient-to-t from-blue-500 to-blue-400 rounded-t-md animate-fade-in border-b border-white/20 shadow-sm" 
+                      style={{ height: `${data.inorganic}%`, animationDelay: `${i * 50}ms` }}
+                    ></div>
+                    {/* Organic Bar (Bottom) */}
+                    <div 
+                      className="w-full bg-gradient-to-t from-green-500 to-green-400 rounded-b-sm animate-fade-in shadow-sm" 
+                      style={{ height: `${data.organic}%`, animationDelay: `${i * 50}ms` }}
+                    ></div>
+                  </div>
+                  
+                  {/* Label */}
+                  <span className="absolute -bottom-6 text-xs text-gray-500 font-medium group-hover:text-gray-900 transition-colors">{data.day}</span>
                 </div>
-                {/* Bar */}
-                <div 
-                   className="w-full bg-green-500 rounded-t-sm hover:bg-green-400 transition-colors animate-fade-in" 
-                   style={{ height: `${height}%`, animationDelay: `${i * 100}ms` }}
-                ></div>
-                {/* Label */}
-                <span className="absolute -bottom-6 text-xs text-gray-400 font-medium">{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i]}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
