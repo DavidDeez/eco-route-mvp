@@ -83,9 +83,9 @@ export default function Dashboard() {
               <option>Last Week</option>
             </select>
           </div>
-          <div className="h-64 flex items-end justify-between gap-2 sm:gap-4 px-1 sm:px-4">
+          <div className="h-64 flex items-end justify-between gap-2 sm:gap-4 px-1 sm:px-4 pb-6 mt-4">
             {[45, 60, 35, 75, 55, 90, 85].map((height, i) => (
-              <div key={i} className="w-full flex flex-col items-center gap-2 group relative">
+              <div key={i} className="w-full h-full flex flex-col justify-end items-center group relative">
                 {/* Tooltip */}
                 <div className="opacity-0 group-hover:opacity-100 absolute -top-8 bg-gray-900 text-white text-xs px-2 py-1 rounded transition-opacity whitespace-nowrap z-10 pointer-events-none">
                   {height * 12} kg
@@ -96,7 +96,7 @@ export default function Dashboard() {
                    style={{ height: `${height}%`, animationDelay: `${i * 100}ms` }}
                 ></div>
                 {/* Label */}
-                <span className="text-xs text-gray-400 font-medium">{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i]}</span>
+                <span className="absolute -bottom-6 text-xs text-gray-400 font-medium">{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i]}</span>
               </div>
             ))}
           </div>
