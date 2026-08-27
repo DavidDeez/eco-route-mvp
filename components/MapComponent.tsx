@@ -1,9 +1,9 @@
 'use client';
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import { initialBins, processingPlants } from '@/lib/mockData';
 import L from 'leaflet';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 // Fix for default marker icons in Leaflet with Next.js
 const customIcon = (color: string) => new L.Icon({
@@ -31,8 +31,8 @@ export default function MapComponent() {
     <div className="h-[600px] w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm relative z-0">
       <MapContainer center={center} zoom={13} className="h-full w-full">
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+          attribution='Tiles &copy; Esri'
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
         />
         
         {initialBins.map((bin) => {
@@ -54,14 +54,22 @@ export default function MapComponent() {
         })}
 
         {processingPlants.map((plant) => (
-          <Marker key={plant.id} position={[plant.lat, plant.lng]} icon={plantIcon}>
-            <Popup>
-              <div className="font-sans">
-                <h3 className="font-bold text-lg">{plant.name}</h3>
-                <p className="text-sm text-gray-600 capitalize">Processes: {plant.type} waste</p>
-              </div>
-            </Popup>
-          </Marker>
+          <React.Fragment key={plant.id}>
+            <Circle 
+              center={[plant.lat, plant.lng]} 
+              radius={2500} // 2.5km radius
+              pathOptions={{ fillColor: '#eab308', color: '#eab308', fillOpacity: 0.1, weight: 1 }}
+            />
+            <Marker position={[plant.lat, plant.lng]} icon={plantIcon}>
+              <Popup>
+                <div className="font-sans">
+                  <h3 className="font-bold text-lg">{plant.name}</h3>
+                  <p className="text-sm text-gray-600 capitalize">Processes: {plant.type} waste</p>
+                  <p className="text-xs text-yellow-600 mt-1">2.5km Service Radius</p>
+                </div>
+              </Popup>
+            </Marker>
+          </React.Fragment>
         ))}
       </MapContainer>
     </div>
