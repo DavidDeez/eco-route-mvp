@@ -1,9 +1,18 @@
 'use client';
 
-import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet';
 import { initialBins, processingPlants } from '@/lib/mockData';
 import L from 'leaflet';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
+// Helper component to update map center dynamically
+function MapUpdater({ center }: { center: [number, number] }) {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo(center, 12, { duration: 1.5 });
+  }, [center, map]);
+  return null;
+}
 
 // Fix for default marker icons in Leaflet with Next.js
 const customIcon = (color: string) => new L.Icon({
@@ -22,14 +31,21 @@ const plantIcon = new L.Icon({
   iconAnchor: [15, 46],
 });
 
-export default function MapComponent() {
+export default function MapComponent({ selectedCity = 'Lagos' }: { selectedCity?: string }) {
   
-  // Base Lagos coordinates
-  const center: [number, number] = [6.5244, 3.3792];
+  // Coordinate map for cities
+  const cityCoordinates: Record<string, [number, number]> = {
+    'Lagos': [6.5244, 3.3792],
+    'Ibadan': [7.3775, 3.9470],
+    'Abuja': [9.0579, 7.4951],
+  };
+
+  const center = cityCoordinates[selectedCity] || cityCoordinates['Lagos'];
 
   return (
     <div className="h-[600px] w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm relative z-0">
-      <MapContainer center={center} zoom={13} className="h-full w-full">
+      <MapContainer center={center} zoom={12} className="h-full w-full">
+        <MapUpdater center={center} />
         <TileLayer
           attribution='Tiles &copy; Esri'
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
