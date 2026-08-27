@@ -36,7 +36,7 @@ export default function LoginPage() {
           <div className="mx-auto w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white mb-4 shadow-sm">
             <Leaf className="w-6 h-6" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Welcome to EcoRoute</h1>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">EcoRoute</h1>
           <p className="text-gray-500 font-medium">Smart Waste Management Platform</p>
         </div>
 
