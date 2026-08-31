@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MetricsCard from '@/components/MetricsCard';
 import { initialBins, initialTrucks } from '@/lib/mockData';
 import { Trash2, Recycle, Truck as TruckIcon, AlertTriangle, Activity } from 'lucide-react';
@@ -8,6 +8,23 @@ import { Trash2, Recycle, Truck as TruckIcon, AlertTriangle, Activity } from 'lu
 export default function Dashboard() {
   const [bins, setBins] = useState(initialBins);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    setRole(localStorage.getItem('ecoroute_role') || 'user');
+  }, []);
+
+  if (role === 'user') {
+    return (
+      <div className="p-4 md:p-8 max-w-6xl mx-auto flex flex-col items-center justify-center min-h-[60vh] text-center">
+        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+          <TruckIcon className="w-8 h-8 text-blue-600" />
+        </div>
+        <h1 className="text-3xl font-semibold text-gray-900 mb-4">Welcome, Field Worker</h1>
+        <p className="text-gray-500 mb-8 max-w-md mx-auto">You are logged in with Field Worker access. Navigate to the Live Map to see bins assigned to you, or check your Profile.</p>
+      </div>
+    );
+  }
 
   const totalBins = bins.length;
   const fullBins = bins.filter(b => b.status === 'full').length;

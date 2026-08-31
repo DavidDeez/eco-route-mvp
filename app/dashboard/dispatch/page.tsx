@@ -1,12 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { initialBins } from '@/lib/mockData';
 import { MapPin, Truck as TruckIcon, Zap } from 'lucide-react';
 
 export default function DispatchPage() {
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [routeGenerated, setRouteGenerated] = useState(false);
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    setRole(localStorage.getItem('ecoroute_role') || 'user');
+  }, []);
+
+  if (role === 'user') {
+    return (
+      <div className="p-8 text-center text-gray-500">
+        You do not have permission to view the Dispatch Control panel.
+      </div>
+    );
+  }
 
   const fullBins = initialBins.filter(b => b.status === 'full');
   const organicTargets = fullBins.filter(b => b.type === 'organic');

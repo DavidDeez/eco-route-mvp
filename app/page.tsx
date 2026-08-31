@@ -13,7 +13,8 @@ export default function LoginPage() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate auth delay
+    // Simulate auth delay and set Admin role
+    localStorage.setItem('ecoroute_role', 'admin');
     setTimeout(() => {
       router.push('/dashboard');
     }, 800);
@@ -21,6 +22,8 @@ export default function LoginPage() {
 
   const handleGuestLogin = () => {
     setIsLoading(true);
+    // Set Field Worker / User role
+    localStorage.setItem('ecoroute_role', 'user');
     setTimeout(() => {
       router.push('/dashboard');
     }, 500);
@@ -115,7 +118,7 @@ export default function LoginPage() {
                 disabled={isLoading}
                 className="w-full flex justify-center items-center py-2.5 px-4 border border-gray-200 rounded-lg shadow-sm bg-white text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 disabled:opacity-50"
               >
-                Login as Guest
+                Login as Field Worker (User)
                 <ArrowRight className="ml-2 w-4 h-4 text-gray-400" />
               </button>
             </div>

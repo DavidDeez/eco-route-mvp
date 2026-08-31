@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { initialBins } from '@/lib/mockData';
 import { Search, Filter } from 'lucide-react';
 
@@ -10,6 +10,19 @@ export default function BinsDirectory() {
   const [filterType, setFilterType] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newBin, setNewBin] = useState({ type: 'organic', address: '', city: 'Lagos' });
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    setRole(localStorage.getItem('ecoroute_role') || 'user');
+  }, []);
+
+  if (role === 'user') {
+    return (
+      <div className="p-8 text-center text-gray-500">
+        You do not have permission to view the Bin Directory.
+      </div>
+    );
+  }
 
   const filteredBins = bins.filter(bin => {
     const matchesSearch = bin.id.toLowerCase().includes(searchTerm.toLowerCase()) || 

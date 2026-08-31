@@ -2,23 +2,31 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Home, Map as MapIcon, Truck, Settings, Menu, X, Archive, User } from 'lucide-react';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [role, setRole] = useState<string | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    // Read role from local storage on client mount
+    const savedRole = localStorage.getItem('ecoroute_role') || 'user';
+    setRole(savedRole);
+  }, []);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
 
+  // Admin sees all. User hides Bin Directory and Dispatch
   const navItems = [
-    { href: '/dashboard', icon: Home, label: 'Overview' },
-    { href: '/dashboard/bins', icon: Archive, label: 'Bin Directory' },
-    { href: '/dashboard/map', icon: MapIcon, label: 'Live Map' },
-    { href: '/dashboard/dispatch', icon: Truck, label: 'Dispatch' },
-    { href: '/dashboard/profile', icon: User, label: 'Profile' },
-  ];
+    { href: '/dashboard', icon: Home, label: 'Overview', roles: ['admin', 'user'] },
+    { href: '/dashboard/bins', icon: Archive, label: 'Bin Directory', roles: ['admin'] },
+    { href: '/dashboard/map', icon: MapIcon, label: 'Live Map', roles: ['admin', 'user'] },
+    { href: '/dashboard/dispatch', icon: Truck, label: 'Dispatch', roles: ['admin'] },
+    { href: '/dashboard/profile', icon: User, label: 'Profile', roles: ['admin', 'user'] },
+  ].filter(item => !role || item.roles.includes(role));
 
   return (
     <>
@@ -56,7 +64,7 @@ export default function Sidebar() {
           </div>
           <div>
             <h1 className="text-lg font-semibold text-gray-900 leading-tight">EcoRoute</h1>
-            <p className="text-gray-500 text-xs">Admin Console</p>
+            <p className="text-gray-500 text-xs capitalize">{role === 'admin' ? 'Admin Console' : 'Field Worker'}</p>
           </div>
         </div>
         
